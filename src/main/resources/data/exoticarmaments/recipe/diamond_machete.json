@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "key": {
+    "I": {
+      "item": "minecraft:stick"
+    },
+    "C": {
+      "item": "minecraft:diamond"
+    }
+  },
+  "pattern": [
+    "CI",
+    " C",
+    " I"
+  ],
+  "result": {
+    "count": 1,
+    "id": "exoticarmaments:diamond_machete"
+  }
+}

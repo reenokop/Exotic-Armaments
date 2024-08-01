@@ -1,0 +1,20 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "key": {
+    "Y": {
+      "item": "minecraft:stick"
+    },
+    "/": {
+      "item": "minecraft:iron_ingot"
+    }
+  },
+  "pattern": [
+    "Y/",
+    "YY"
+  ],
+  "result": {
+    "count": 1,
+    "id": "exoticarmaments:iron_sai"
+  }
+}

@@ -1,0 +1,48 @@
+{
+  "anvil_cost": 1,
+  "description": {
+    "translate": "enchantment.exoticarmaments.scathe"
+  },
+  "effects": {
+    "minecraft:damage": [
+      {
+        "effect": {
+          "type": "minecraft:add",
+          "value": {
+            "type": "minecraft:linear",
+            "base": 1.5,
+            "per_level_above_first": 1.5
+          }
+        }
+      }
+    ],
+    "minecraft:attributes": [
+      {
+        "amount": {
+          "type": "minecraft:linear",
+          "base": 0.1,
+          "per_level_above_first": 0.1
+        },
+        "attribute": "minecraft:player.entity_interaction_range",
+        "id": "exoticarmaments:enchantment.scathe",
+        "operation": "add_value"
+      }
+    ]
+  },
+  "exclusive_set": "#minecraft:exclusive_set/damage",
+  "max_cost": {
+    "base": 24,
+    "per_level_above_first": 10
+  },
+  "max_level": 3,
+  "min_cost": {
+    "base": 7,
+    "per_level_above_first": 10
+  },
+  "primary_items": "#exoticarmaments:enchantable/long_sword",
+  "slots": [
+    "mainhand"
+  ],
+  "supported_items": "#exoticarmaments:enchantable/long_sword",
+  "weight": 10
+}

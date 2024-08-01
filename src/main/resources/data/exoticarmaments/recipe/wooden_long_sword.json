@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "key": {
+    "I": {
+      "item": "minecraft:stick"
+    },
+    "/": {
+      "tag": "minecraft:planks"
+    }
+  },
+  "pattern": [
+    "  /",
+    " / ",
+    "I /"
+  ],
+  "result": {
+    "count": 1,
+    "id": "exoticarmaments:wooden_long_sword"
+  }
+}

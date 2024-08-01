@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "key": {
+    "I": {
+      "item": "minecraft:stick"
+    },
+    "C": {
+      "item": "minecraft:gold_ingot"
+    }
+  },
+  "pattern": [
+    "CI",
+    " C",
+    " I"
+  ],
+  "result": {
+    "count": 1,
+    "id": "exoticarmaments:golden_machete"
+  }
+}

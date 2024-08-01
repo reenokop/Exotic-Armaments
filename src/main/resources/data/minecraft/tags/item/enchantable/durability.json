@@ -1,0 +1,8 @@
+{
+  "replace": false,
+  "values": [
+    "#exoticarmaments:enchantable/machete",
+    "#exoticarmaments:enchantable/long_sword",
+    "#exoticarmaments:enchantable/sai"
+  ]
+}

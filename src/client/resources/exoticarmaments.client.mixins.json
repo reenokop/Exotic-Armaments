@@ -1,0 +1,14 @@
+{
+  "required": true,
+  "package": "net.reenokop.exoticarmaments.mixin.client",
+  "compatibilityLevel": "JAVA_21",
+  "client": [
+    "BipedEntityModelMixin",
+    "HeldItemFeatureRendererMixin",
+    "HeldItemRendererMixin",
+    "MinecraftClientMixin"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+	}
+}

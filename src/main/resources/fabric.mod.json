@@ -1,0 +1,44 @@
+{
+	"schemaVersion": 1,
+	"id": "exoticarmaments",
+	"version": "${version}",
+	"name": "Exotic Armaments",
+	"description": "Machetes, Long Swords and Sais! Check the Modrinth page for more information.",
+	"authors": [
+		"reenokop"
+	],
+	"contact": {
+		"homepage": "https://fabricmc.net/",
+		"sources": "https://github.com/FabricMC/fabric-example-mod"
+	},
+	"license": "MIT",
+	"icon": "assets/exoticarmaments/icon.png",
+	"environment": "*",
+	"entrypoints": {
+		"main": [
+			"net.reenokop.exoticarmaments.ExoticArmaments"
+		],
+		"client": [
+			"net.reenokop.exoticarmaments.ExoticArmamentsClient"
+		],
+		"fabric-datagen": [
+			"net.reenokop.exoticarmaments.ExoticArmamentsDataGenerator"
+		]
+	},
+	"mixins": [
+		"exoticarmaments.mixins.json",
+		{
+			"config": "exoticarmaments.client.mixins.json",
+			"environment": "client"
+		}
+	],
+	"depends": {
+		"fabricloader": ">=0.15.11",
+		"minecraft": "~1.21",
+		"java": ">=21",
+		"fabric-api": "*"
+	},
+	"suggests": {
+		"another-mod": "*"
+	}
+}

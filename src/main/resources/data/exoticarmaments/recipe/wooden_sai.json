@@ -1,0 +1,20 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "key": {
+    "Y": {
+      "item": "minecraft:stick"
+    },
+    "/": {
+      "tag": "minecraft:planks"
+    }
+  },
+  "pattern": [
+    "Y/",
+    "YY"
+  ],
+  "result": {
+    "count": 1,
+    "id": "exoticarmaments:wooden_sai"
+  }
+}

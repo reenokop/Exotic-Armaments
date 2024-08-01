@@ -1,0 +1,50 @@
+{
+  "item.exoticarmaments.wooden_machete": "Wooden Machete",
+  "item.exoticarmaments.stone_machete": "Stone Machete",
+  "item.exoticarmaments.iron_machete": "Iron Machete",
+  "item.exoticarmaments.golden_machete": "Golden Machete",
+  "item.exoticarmaments.diamond_machete": "Diamond Machete",
+  "item.exoticarmaments.netherite_machete": "Netherite Machete",
+
+  "item.exoticarmaments.wooden_long_sword": "Wooden Long Sword",
+  "item.exoticarmaments.stone_long_sword": "Stone Long Sword",
+  "item.exoticarmaments.iron_long_sword": "Iron Long Sword",
+  "item.exoticarmaments.golden_long_sword": "Golden Long Sword",
+  "item.exoticarmaments.diamond_long_sword": "Diamond Long Sword",
+  "item.exoticarmaments.netherite_long_sword": "Netherite Long Sword",
+
+  "item.exoticarmaments.wooden_sai": "Wooden Sai",
+  "item.exoticarmaments.stone_sai": "Stone Sai",
+  "item.exoticarmaments.iron_sai": "Iron Sai",
+  "item.exoticarmaments.golden_sai": "Golden Sai",
+  "item.exoticarmaments.diamond_sai": "Diamond Sai",
+  "item.exoticarmaments.netherite_sai": "Netherite Sai",
+
+
+  "enchantment.exoticarmaments.scathe": "Scathe",
+  "enchantment.exoticarmaments.tear": "Tear",
+
+
+  "tag.block.exoticarmaments.machete_efficient": "Machete Efficient",
+
+  "tag.item.exoticarmaments.machetes": "Machetes",
+  "tag.item.exoticarmaments.long_swords": "Long Swords",
+  "tag.item.exoticarmaments.sais": "Sais",
+
+  "tag.item.exoticarmaments.enchantable.machete": "Machetes",
+  "tag.item.exoticarmaments.enchantable.long_sword": "Long Swords",
+  "tag.item.exoticarmaments.enchantable.sai": "Sais",
+
+  "tag.exoticarmaments.enchantable.blade": "Exotic Armaments Weapons",
+  "tag.exoticarmaments.enchantable.combat_weapon": "Exotic Armaments Combat Weapons",
+  "tag.exoticarmaments.enchantable.large_weapon": "Exotic Armaments Large Weapons",
+  "tag.exoticarmaments.enchantable.slashing_weapon": "Exotic Armaments Slashing Weapons",
+  "tag.exoticarmaments.enchantable.slicing_weapon": "Exotic Armaments Slicing Weapons",
+  "tag.exoticarmaments.enchantable.sweeping_weapon": "Exotic Armaments Sweeping Weapons",
+
+
+  "attribute.exoticarmaments.generic.shield_disable_chance": "Shield Disable Chance",
+  "attribute.exoticarmaments.generic.sweeping_edge_radius": "Sweeping Edge Radius",
+  "attribute.exoticarmaments.generic.offhand_attack_damage": "Offhand Attack Damage",
+  "attribute.exoticarmaments.generic.dual_wield_attack_speed": "Dual Wield Attack Speed"
+}

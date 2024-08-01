@@ -1,0 +1,6 @@
+{
+  "parent": "exoticarmaments:item/handheld_long_sword",
+  "textures": {
+    "layer0": "exoticarmaments:item/diamond_long_sword"
+  }
+}

@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "key": {
+    "I": {
+      "item": "minecraft:stick"
+    },
+    "/": {
+      "item": "minecraft:gold_ingot"
+    }
+  },
+  "pattern": [
+    "  /",
+    " / ",
+    "I /"
+  ],
+  "result": {
+    "count": 1,
+    "id": "exoticarmaments:golden_long_sword"
+  }
+}
