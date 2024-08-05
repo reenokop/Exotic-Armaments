@@ -90,8 +90,12 @@ public class SaiItem extends ToolItem {
     @Override
     public boolean postMine(ItemStack stack, World world, BlockState state, BlockPos pos, LivingEntity miner) {
 
-        stack.damage(2, miner, EquipmentSlot.MAINHAND);
-        return true;
+        if (state.getHardness(world, pos) != 0) {
+            stack.damage(2, miner, EquipmentSlot.MAINHAND);
+            return true;
+        }
+
+        return false;
     }
 
     @Override
