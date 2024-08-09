@@ -500,6 +500,7 @@ public class ModLootTables {
                 tableBuilder.pool(poolBuilder);
             }
 
+            // Bonus chest
             if (source.isBuiltin() && LootTables.SPAWN_BONUS_CHEST.equals(key)) {
                 LootPool.Builder poolBuilder = LootPool.builder().rolls(ConstantLootNumberProvider.create(1))
                         .with(ItemEntry.builder(ModItems.WOODEN_MACHETE).weight(2))
