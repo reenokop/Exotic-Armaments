@@ -121,7 +121,7 @@ public abstract class PlayerEntityMixin extends LivingEntityMixin {
             boolean leftHandRule = SaiItem.leftHandRule.getOrDefault(player.getUuid(), false);
 
 
-            if (!leftHandRule) { // Apply the mainhand weapon's cooldown after attacking with the offhand and vice versa.
+            if (!leftHandRule) { // Apply the mainhand weapon's cooldown after attacking with the offhand and vice versa
                 cir.setReturnValue((1.0F / (attackSpeed - weapon.getSaiSpeed(weapon.getMaterial()) + weapon.dualWieldAttackSpeed) * 20.0F));
 
             } else {
