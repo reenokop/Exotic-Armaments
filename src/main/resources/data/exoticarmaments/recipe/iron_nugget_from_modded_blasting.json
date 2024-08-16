@@ -1,0 +1,20 @@
+{
+  "type": "minecraft:blasting",
+  "category": "misc",
+  "cookingtime": 100,
+  "experience": 0.1,
+  "ingredient": [
+    {
+      "item": "exoticarmaments:iron_machete"
+    },
+    {
+      "item": "exoticarmaments:iron_long_sword"
+    },
+    {
+      "item": "exoticarmaments:iron_sai"
+    }
+  ],
+  "result": {
+    "id": "minecraft:iron_nugget"
+  }
+}
