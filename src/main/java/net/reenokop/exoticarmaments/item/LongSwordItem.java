@@ -39,7 +39,7 @@ public class LongSwordItem extends Item {
 
         return new ToolComponent(
                 List.of(ToolComponent.Rule.ofAlwaysDropping(RegistryEntryList.of(Blocks.COBWEB.getRegistryEntry()), 15.0F),
-                        ToolComponent.Rule.of(registryEntryLookup.getOrThrow(BlockTags.SWORD_EFFICIENT), 1.5F)), 1.0F, 2);
+                        ToolComponent.Rule.of(registryEntryLookup.getOrThrow(BlockTags.SWORD_EFFICIENT), 1.5F)), 1.0F, 2, false);
     }
 
     public static AttributeModifiersComponent createAttributeModifiers(ToolMaterial material, float attackDamage, float attackSpeed) {
@@ -64,18 +64,11 @@ public class LongSwordItem extends Item {
     }
 
     @Override
-    public boolean canMine(BlockState state, World world, BlockPos pos, PlayerEntity miner) {
-        return !miner.isCreative();
-    }
-
-    @Override
-    public boolean postHit(ItemStack stack, LivingEntity target, LivingEntity attacker) {
+    public void postHit(ItemStack stack, LivingEntity target, LivingEntity attacker) {
 
         target.takeKnockback(0.22F, MathHelper.sin(attacker.getYaw() * (float) (Math.PI / 180.0)),
                 (-MathHelper.cos(attacker.getYaw() * (float) (Math.PI / 180.0))));
         stack.damage(1, attacker, EquipmentSlot.MAINHAND);
-
-        return true;
     }
 
 }

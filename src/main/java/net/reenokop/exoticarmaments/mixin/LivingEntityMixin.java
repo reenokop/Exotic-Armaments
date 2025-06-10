@@ -18,14 +18,14 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 public abstract class LivingEntityMixin {
 
 	// Machete
-	@Inject(method = "disablesShield", at = @At("HEAD"), cancellable = true)
-	public void macheteDisablesShield(CallbackInfoReturnable<Boolean> cir) {
+	@Inject(method = "getWeaponDisableBlockingForSeconds", at = @At("HEAD"), cancellable = true)
+	public void macheteDisablesShield(CallbackInfoReturnable<Float> cir) {
 
 		LivingEntity livingEntity = (LivingEntity) (Object) this;
 
 		if (livingEntity.getMainHandStack().getItem() instanceof MacheteItem weapon && weapon.disableChance + (crit(livingEntity)
 				? Math.ceil(Math.sqrt((double) weapon.disableChance / 10)) : 0) >= Random.create().nextInt(100) + 1) {
-			cir.setReturnValue(true);
+			cir.setReturnValue(5.0F);
 		}
 	}
 

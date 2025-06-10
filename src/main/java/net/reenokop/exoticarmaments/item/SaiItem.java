@@ -66,12 +66,12 @@ public class SaiItem extends Item {
     }
 
     @Override
-    public boolean canMine(BlockState state, World world, BlockPos pos, PlayerEntity miner) {
-        return !miner.isCreative();
+    public boolean canMine(ItemStack stack, BlockState state, World world, BlockPos pos, LivingEntity user) {
+        return user instanceof PlayerEntity player && !player.isCreative();
     }
 
     @Override
-    public boolean postHit(ItemStack stack, LivingEntity target, LivingEntity attacker) {
+    public void postHit(ItemStack stack, LivingEntity target, LivingEntity attacker) {
 
         target.takeKnockback(0.11F, MathHelper.sin(attacker.getYaw() * (float) (Math.PI / 180.0)),
                 (-MathHelper.cos(attacker.getYaw() * (float) (Math.PI / 180.0))));
@@ -82,12 +82,11 @@ public class SaiItem extends Item {
 
             if (offHandStack.getItem() instanceof SaiItem && leftHandRule) {
                 offHandStack.damage(1, attacker, EquipmentSlot.OFFHAND);
-                return true;
+                return;
             }
         }
 
         stack.damage(1, attacker, EquipmentSlot.MAINHAND);
-        return true;
     }
 
     @Override

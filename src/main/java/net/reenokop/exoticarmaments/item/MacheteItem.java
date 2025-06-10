@@ -46,7 +46,7 @@ public class MacheteItem extends Item {
                 List.of(ToolComponent.Rule.ofAlwaysDropping(RegistryEntryList.of(Blocks.COBWEB.getRegistryEntry()), 16.0F),
                         ToolComponent.Rule.of(registryEntryLookup.getOrThrow(BlockTags.AXE_MINEABLE), axeMineableSpeed),
                         ToolComponent.Rule.of(registryEntryLookup.getOrThrow(BlockTags.HOE_MINEABLE), hoeMineableSpeed),
-                        ToolComponent.Rule.of(registryEntryLookup.getOrThrow(BlockTags.SWORD_EFFICIENT), 1.4F)), 1.0F, 2);
+                        ToolComponent.Rule.of(registryEntryLookup.getOrThrow(BlockTags.SWORD_EFFICIENT), 1.4F)), 1.0F, 2, true);
     }
 
     public static AttributeModifiersComponent createAttributeModifiers(ToolMaterial material, float attackDamage, float attackSpeed,
@@ -68,15 +68,14 @@ public class MacheteItem extends Item {
     }
 
     @Override
-    public boolean canMine(BlockState state, World world, BlockPos pos, PlayerEntity miner) {
-        return !miner.isCreative() || state.isIn(ModTagKeys.MACHETE_EFFICIENT);
+    public boolean canMine(ItemStack stack, BlockState state, World world, BlockPos pos, LivingEntity user) {
+        return user instanceof PlayerEntity player && !player.isCreative() || state.isIn(ModTagKeys.MACHETE_EFFICIENT);
     }
 
     @Override
-    public boolean postHit(ItemStack stack, LivingEntity target, LivingEntity attacker) {
+    public void postHit(ItemStack stack, LivingEntity target, LivingEntity attacker) {
 
         stack.damage(1, attacker, EquipmentSlot.MAINHAND);
-        return true;
     }
 
     @Override

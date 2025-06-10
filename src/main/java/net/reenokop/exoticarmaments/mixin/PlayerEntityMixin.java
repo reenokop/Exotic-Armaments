@@ -197,7 +197,7 @@ public abstract class PlayerEntityMixin extends LivingEntityMixin {
                 attacker.getWorld().playSound(player, (attacker.getX() + player.getX()) / 2, (attacker.getY()
                                 + player.getY()) / 2, (attacker.getZ() + player.getZ()) / 2, SoundEvents.BLOCK_ANVIL_LAND,
                         SoundCategory.PLAYERS, 0.3F, 0.8F + attacker.getWorld().random.nextFloat() * 0.4F);
-                attacker.playSound(SoundEvents.ITEM_SHIELD_BREAK, 1.0F, 0.4F + player.getWorld().random.nextFloat() * 0.4F);
+                attacker.playSound(SoundEvents.ITEM_SHIELD_BREAK.value(), 1.0F, 0.4F + player.getWorld().random.nextFloat() * 0.4F);
 
                 // Parry successfully
             } else {
