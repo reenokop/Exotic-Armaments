@@ -11,6 +11,8 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
+import static net.reenokop.exoticarmaments.ExoticArmamentsClient.clientPlayer;
+
 @Environment(EnvType.CLIENT)
 @Mixin(BipedEntityModel.class)
 public class BipedEntityModelMixin<T extends BipedEntityRenderState> {
@@ -21,7 +23,7 @@ public class BipedEntityModelMixin<T extends BipedEntityRenderState> {
         BipedEntityModel playerModel = (BipedEntityModel) (Object) this;
 
         if (playerModel instanceof PlayerEntityModel && state.isUsingItem && state.itemUseTime < 72000
-                && state.rightHandStack.getItem() instanceof SaiItem && state.activeHand == Hand.MAIN_HAND) {
+                && clientPlayer.getMainHandStack().getItem() instanceof SaiItem && state.activeHand == Hand.MAIN_HAND) {
             float headYaw = playerModel.head.yaw;
             float headPitch = playerModel.head.pitch;
 
@@ -38,7 +40,7 @@ public class BipedEntityModelMixin<T extends BipedEntityRenderState> {
         BipedEntityModel playerModel = (BipedEntityModel) (Object) this;
 
         if (playerModel instanceof PlayerEntityModel && state.isUsingItem && state.itemUseTime > 0
-                && state.leftHandStack.getItem() instanceof SaiItem && state.activeHand == Hand.OFF_HAND) {
+                && clientPlayer.getOffHandStack().getItem() instanceof SaiItem && state.activeHand == Hand.OFF_HAND) {
 
             float headYaw = playerModel.head.yaw;
             float headPitch = playerModel.head.pitch;
