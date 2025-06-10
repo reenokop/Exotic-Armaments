@@ -4,8 +4,6 @@ import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.render.VertexConsumerProvider;
 import net.minecraft.client.render.entity.feature.HeldItemFeatureRenderer;
-import net.minecraft.client.render.entity.model.EntityModel;
-import net.minecraft.client.render.entity.model.ModelWithArms;
 import net.minecraft.client.render.entity.state.ArmedEntityRenderState;
 import net.minecraft.client.render.entity.state.PlayerEntityRenderState;
 import net.minecraft.client.render.item.ItemRenderState;
@@ -24,7 +22,7 @@ import static net.reenokop.exoticarmaments.ExoticArmamentsClient.clientPlayer;
 
 @Environment(EnvType.CLIENT)
 @Mixin(HeldItemFeatureRenderer.class)
-public class HeldItemFeatureRendererMixin<S extends ArmedEntityRenderState, M extends EntityModel<S> & ModelWithArms> {
+public class HeldItemFeatureRendererMixin<S extends ArmedEntityRenderState> {
 
     @Inject(method = "renderItem", at = @At(value = "INVOKE",
             target = "Lnet/minecraft/client/util/math/MatrixStack;translate(FFF)V", shift = At.Shift.AFTER))
