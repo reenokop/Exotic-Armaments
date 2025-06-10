@@ -5,6 +5,7 @@ import net.minecraft.enchantment.Enchantments;
 import net.minecraft.entity.EntityType;
 import net.minecraft.item.Items;
 import net.minecraft.loot.LootPool;
+import net.minecraft.loot.LootTable;
 import net.minecraft.loot.LootTables;
 import net.minecraft.loot.condition.DamageSourcePropertiesLootCondition;
 import net.minecraft.loot.condition.EntityPropertiesLootCondition;
@@ -32,8 +33,9 @@ public class ModLootTables {
 
         LootTableEvents.MODIFY.register((key, tableBuilder, source, listener) -> {
 
+
             // Mobs
-            if (source.isBuiltin() && EntityType.PIGLIN_BRUTE.getLootTableId().equals(key)) {
+            if (source.isBuiltin() && lootTableConditionCheck(EntityType.PIGLIN_BRUTE, key)) {
                 LootPool.Builder poolBuilder = LootPool.builder().conditionally(RandomChanceLootCondition.builder(0.17F))
                         .rolls(UniformLootNumberProvider.create(1, 2))
                         .with(ItemEntry.builder(ModItems.GOLDEN_SAI)
@@ -44,7 +46,7 @@ public class ModLootTables {
                 tableBuilder.pool(poolBuilder);
             }
 
-            if (source.isBuiltin() && EntityType.PILLAGER.getLootTableId().equals(key)) {
+            if (source.isBuiltin() && lootTableConditionCheck(EntityType.PILLAGER, key)) {
                 LootPool.Builder poolBuilder = LootPool.builder().rolls(ConstantLootNumberProvider.create(1))
                         .with(ItemEntry.builder(ModItems.IRON_MACHETE).weight(21)
                                 .conditionally(EntityPropertiesLootCondition.builder(LootContext.EntityTarget.THIS,
@@ -59,7 +61,7 @@ public class ModLootTables {
                 tableBuilder.pool(poolBuilder);
             }
 
-            if (source.isBuiltin() && EntityType.ILLUSIONER.getLootTableId().equals(key)) {
+            if (source.isBuiltin() && lootTableConditionCheck(EntityType.ILLUSIONER, key)) {
                 LootPool.Builder poolBuilder = LootPool.builder().conditionally(RandomChanceLootCondition.builder(0.23F))
                         .rolls(UniformLootNumberProvider.create(1, 2))
                         .with(ItemEntry.builder(ModItems.IRON_SAI).weight(7)
@@ -73,9 +75,9 @@ public class ModLootTables {
             }
 
             // "Mojang is scared of mob drops"      don't worry I got you
-            if (source.isBuiltin() && (EntityType.FROG.getLootTableId().equals(key)
-                    || EntityType.GOAT.getLootTableId().equals(key)
-                    || EntityType.ARMADILLO.getLootTableId().equals(key))) {
+            if (source.isBuiltin() && (lootTableConditionCheck(EntityType.FROG, key)
+                    || lootTableConditionCheck(EntityType.GOAT, key)
+                    || lootTableConditionCheck(EntityType.ARMADILLO, key))) {
                 LootPool.Builder poolBuilder = LootPool.builder().rolls(ConstantLootNumberProvider.create(1))
                         .with(ItemEntry.builder(ModItems.WOODEN_MACHETE).weight(2)
                                 .conditionally(KilledByPlayerLootCondition.builder())
@@ -85,9 +87,9 @@ public class ModLootTables {
                 tableBuilder.pool(poolBuilder);
             }
 
-            if (source.isBuiltin() && (EntityType.TADPOLE.getLootTableId().equals(key)
-                    || EntityType.AXOLOTL.getLootTableId().equals(key)
-                    || EntityType.ALLAY.getLootTableId().equals(key))) {
+            if (source.isBuiltin() && (lootTableConditionCheck(EntityType.TADPOLE, key)
+                    || lootTableConditionCheck(EntityType.AXOLOTL, key)
+                    || lootTableConditionCheck(EntityType.ALLAY, key))) {
                 LootPool.Builder poolBuilder = LootPool.builder().rolls(ConstantLootNumberProvider.create(1))
                         .with(ItemEntry.builder(ModItems.WOODEN_LONG_SWORD).weight(2)
                                 .conditionally(KilledByPlayerLootCondition.builder())
@@ -97,8 +99,8 @@ public class ModLootTables {
                 tableBuilder.pool(poolBuilder);
             }
 
-            if (source.isBuiltin() && (EntityType.SNIFFER.getLootTableId().equals(key)
-                    || EntityType.CAMEL.getLootTableId().equals(key))) {
+            if (source.isBuiltin() && (lootTableConditionCheck(EntityType.SNIFFER, key)
+                    || lootTableConditionCheck(EntityType.CAMEL, key))) {
                 LootPool.Builder poolBuilder = LootPool.builder().rolls(ConstantLootNumberProvider.create(1))
                         .with(ItemEntry.builder(ModItems.WOODEN_SAI).weight(2)
                                 .conditionally(KilledByPlayerLootCondition.builder())
@@ -108,14 +110,14 @@ public class ModLootTables {
                 tableBuilder.pool(poolBuilder);
             }
 
-            if (source.isBuiltin() && EntityType.WARDEN.getLootTableId().equals(key)) {
+            if (source.isBuiltin() && lootTableConditionCheck(EntityType.WARDEN, key)) {
                 LootPool.Builder poolBuilder = LootPool.builder().rolls(ConstantLootNumberProvider.create(1))
                         .with(ItemEntry.builder(ModItems.WOODEN_SAI)
                                 .conditionally(DamageSourcePropertiesLootCondition.builder(DamageSourcePredicate.Builder.create()
                                         .tag(TagPredicate.expected(DamageTypeTags.IS_DROWNING))))
                                 .apply(SetDamageLootFunction.builder(ConstantLootNumberProvider.create(0.01F)))
                                 .apply(new SetEnchantmentsLootFunction.Builder(true).enchantment(listener
-                                        .getWrapperOrThrow(RegistryKeys.ENCHANTMENT).getOrThrow(Enchantments.LUCK_OF_THE_SEA),
+                                        .getOrThrow(RegistryKeys.ENCHANTMENT).getOrThrow(Enchantments.LUCK_OF_THE_SEA),
                                         ConstantLootNumberProvider.create(4))))
                         .with(EmptyEntry.builder());
 
@@ -177,7 +179,7 @@ public class ModLootTables {
                                 .apply(new EnchantWithLevelsLootFunction.Builder(UniformLootNumberProvider.create(15, 25))
                                         .conditionally(RandomChanceLootCondition.builder(0.95F))))
                         .with(ItemEntry.builder(Items.BOOK).weight(5)
-                                .apply(new SetEnchantmentsLootFunction.Builder(true).enchantment(listener.getWrapperOrThrow(
+                                .apply(new SetEnchantmentsLootFunction.Builder(true).enchantment(listener.getOrThrow(
                                         RegistryKeys.ENCHANTMENT).getOrThrow(RegistryKey.of(RegistryKeys.ENCHANTMENT, Identifier
                                         .of("exoticarmaments", "scathe"))), UniformLootNumberProvider.create(1, 3))));
                 tableBuilder.pool(poolBuilder);
@@ -189,17 +191,17 @@ public class ModLootTables {
                         .with(ItemEntry.builder(ModItems.DIAMOND_LONG_SWORD).weight(3)
                                 .apply(new EnchantWithLevelsLootFunction.Builder(UniformLootNumberProvider.create(5, 40))))
                         .with(ItemEntry.builder(Items.BOOK).weight(2)
-                                .apply(new SetEnchantmentsLootFunction.Builder(true).enchantment(listener.getWrapperOrThrow(
+                                .apply(new SetEnchantmentsLootFunction.Builder(true).enchantment(listener.getOrThrow(
                                         RegistryKeys.ENCHANTMENT).getOrThrow(RegistryKey.of(RegistryKeys.ENCHANTMENT, Identifier
                                         .of("exoticarmaments", "tear"))), UniformLootNumberProvider.create(2, 3)))
                                 .apply(new EnchantWithLevelsLootFunction.Builder(UniformLootNumberProvider.create(10, 25))
                                         .conditionally(RandomChanceLootCondition.builder(0.6F))))
                         .with(ItemEntry.builder(Items.BOOK).weight(2)
                                 .apply(new EnchantRandomlyLootFunction.Builder().conditionally(RandomChanceLootCondition.builder(0.75F)))
-                                .apply(new SetEnchantmentsLootFunction.Builder(true).enchantment(listener.getWrapperOrThrow(
+                                .apply(new SetEnchantmentsLootFunction.Builder(true).enchantment(listener.getOrThrow(
                                         RegistryKeys.ENCHANTMENT).getOrThrow(RegistryKey.of(RegistryKeys.ENCHANTMENT, Identifier
                                         .of("exoticarmaments", "scathe"))), UniformLootNumberProvider.create(1, 3)))
-                                .apply(new SetEnchantmentsLootFunction.Builder(true).enchantment(listener.getWrapperOrThrow(
+                                .apply(new SetEnchantmentsLootFunction.Builder(true).enchantment(listener.getOrThrow(
                                         RegistryKeys.ENCHANTMENT).getOrThrow(RegistryKey.of(RegistryKeys.ENCHANTMENT, Identifier
                                         .of("exoticarmaments", "tear"))), UniformLootNumberProvider.create(1, 3))));
 
@@ -218,11 +220,11 @@ public class ModLootTables {
                                 .apply(new EnchantWithLevelsLootFunction.Builder(UniformLootNumberProvider.create(25, 40))
                                         .conditionally(RandomChanceLootCondition.builder(0.6F))))
                         .with(ItemEntry.builder(Items.BOOK).weight(2)
-                                .apply(new SetEnchantmentsLootFunction.Builder(true).enchantment(listener.getWrapperOrThrow(
+                                .apply(new SetEnchantmentsLootFunction.Builder(true).enchantment(listener.getOrThrow(
                                         RegistryKeys.ENCHANTMENT).getOrThrow(RegistryKey.of(RegistryKeys.ENCHANTMENT, Identifier
                                         .of("exoticarmaments", "scathe"))), UniformLootNumberProvider.create(1, 2))))
                         .with(ItemEntry.builder(Items.BOOK).weight(2)
-                                .apply(new SetEnchantmentsLootFunction.Builder(true).enchantment(listener.getWrapperOrThrow(
+                                .apply(new SetEnchantmentsLootFunction.Builder(true).enchantment(listener.getOrThrow(
                                         RegistryKeys.ENCHANTMENT).getOrThrow(RegistryKey.of(RegistryKeys.ENCHANTMENT, Identifier
                                         .of("exoticarmaments", "tear"))), UniformLootNumberProvider.create(1, 3))))
                         .with(EmptyEntry.builder().weight(17));
@@ -431,11 +433,11 @@ public class ModLootTables {
             if (source.isBuiltin() && LootTables.STRONGHOLD_LIBRARY_CHEST.equals(key)) {
                 LootPool.Builder poolBuilder = LootPool.builder().rolls(ConstantLootNumberProvider.create(3))
                         .with(ItemEntry.builder(Items.BOOK)
-                                .apply(new SetEnchantmentsLootFunction.Builder(true).enchantment(listener.getWrapperOrThrow(
+                                .apply(new SetEnchantmentsLootFunction.Builder(true).enchantment(listener.getOrThrow(
                                         RegistryKeys.ENCHANTMENT).getOrThrow(RegistryKey.of(RegistryKeys.ENCHANTMENT, Identifier
                                         .of("exoticarmaments", "scathe"))), UniformLootNumberProvider.create(1, 3))))
                         .with(ItemEntry.builder(Items.BOOK)
-                                .apply(new SetEnchantmentsLootFunction.Builder(true).enchantment(listener.getWrapperOrThrow(
+                                .apply(new SetEnchantmentsLootFunction.Builder(true).enchantment(listener.getOrThrow(
                                         RegistryKeys.ENCHANTMENT).getOrThrow(RegistryKey.of(RegistryKeys.ENCHANTMENT, Identifier
                                         .of("exoticarmaments", "tear"))), UniformLootNumberProvider.create(1, 3))))
                         .with(EmptyEntry.builder().weight(27));
@@ -553,6 +555,10 @@ public class ModLootTables {
                 tableBuilder.pool(poolBuilder);
             }
         });
+    }
+
+    private static boolean lootTableConditionCheck (EntityType<?> entityType, RegistryKey<LootTable> key) {
+        return entityType.getLootTableKey().isPresent() && entityType.getLootTableKey().get().equals(key);
     }
 
 }

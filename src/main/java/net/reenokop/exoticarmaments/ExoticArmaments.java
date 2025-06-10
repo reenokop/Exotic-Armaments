@@ -48,7 +48,7 @@ public class ExoticArmaments implements ModInitializer {
 
 		ModLootTables.modifyLootTables();
 
-		LOGGER.info("HINT: You can press Attack to deliver a strike against your enemies!");
+		LOGGER.info("HINT: You can press the Attack button to deal damage to your enemies!!!");
 	}
 
 }

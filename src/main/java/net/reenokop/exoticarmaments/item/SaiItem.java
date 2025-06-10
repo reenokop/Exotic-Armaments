@@ -10,10 +10,9 @@ import net.minecraft.entity.attribute.EntityAttributes;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.item.ToolItem;
 import net.minecraft.item.ToolMaterial;
+import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
-import net.minecraft.util.TypedActionResult;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
@@ -21,17 +20,20 @@ import net.reenokop.exoticarmaments.attribute.ModAttributes;
 
 import java.util.*;
 
-import static net.minecraft.item.ToolMaterials.*;
+public class SaiItem extends Item {
 
-public class SaiItem extends ToolItem {
+    public SaiItem(ToolMaterial material, float attackDamage, float attackSpeed, Item.Settings settings,
+                   float offHandAttackDamage, float dualWieldAttackSpeed, int disarmChance, int disarmDuration) {
 
-    public SaiItem(ToolMaterial material, Settings settings, float offHandAttackDamage, float dualWieldAttackSpeed,
-                   int disarmChance, int disarmDuration) {
-        super(material, settings);
+        super(settings.maxDamage(material.durability()).repairable(material.repairItems())
+                .enchantable(material.enchantmentValue()).attributeModifiers(createAttributeModifiers(material,
+                        attackDamage, attackSpeed, offHandAttackDamage, dualWieldAttackSpeed)));
+
         this.offHandAttackDamage = offHandAttackDamage;
         this.dualWieldAttackSpeed = dualWieldAttackSpeed;
         this.disarmChance = disarmChance;
         this.disarmDuration = disarmDuration;
+        this.material = material;
     }
 
     public static Map<UUID, Boolean> leftHandRule = new HashMap<>(); // Monsoon reference
@@ -41,17 +43,18 @@ public class SaiItem extends ToolItem {
     public int disarmDuration;
     public static List<Item> sais = new ArrayList<>();
     public static Map<PlayerEntity, Set<Item>> cooldownFromSai = new HashMap<>();
+    private final ToolMaterial material;
 
     public static AttributeModifiersComponent createAttributeModifiers(ToolMaterial material, float attackDamage, float attackSpeed,
             float offHandAttackDamage, float dualWieldAttackSpeed) {
 
         return AttributeModifiersComponent.builder()
                 .add(
-                        EntityAttributes.GENERIC_ATTACK_DAMAGE, new EntityAttributeModifier(BASE_ATTACK_DAMAGE_MODIFIER_ID,
-                                (attackDamage + material.getAttackDamage()), EntityAttributeModifier.Operation.ADD_VALUE),
+                        EntityAttributes.ATTACK_DAMAGE, new EntityAttributeModifier(BASE_ATTACK_DAMAGE_MODIFIER_ID,
+                                (attackDamage + material.attackDamageBonus()), EntityAttributeModifier.Operation.ADD_VALUE),
                         AttributeModifierSlot.MAINHAND)
                 .add(
-                        EntityAttributes.GENERIC_ATTACK_SPEED, new EntityAttributeModifier(BASE_ATTACK_SPEED_MODIFIER_ID,
+                        EntityAttributes.ATTACK_SPEED, new EntityAttributeModifier(BASE_ATTACK_SPEED_MODIFIER_ID,
                                 attackSpeed, EntityAttributeModifier.Operation.ADD_VALUE), AttributeModifierSlot.MAINHAND)
                 .add(
                         ModAttributes.OFFHAND_ATTACK_DAMAGE, new EntityAttributeModifier(ModAttributes.OFFHAND_ATTACK_DAMAGE_MODIFIER_ID,
@@ -99,11 +102,11 @@ public class SaiItem extends ToolItem {
     }
 
     @Override
-    public TypedActionResult<ItemStack> use(World world, PlayerEntity user, Hand hand) {
+    public ActionResult use(World world, PlayerEntity user, Hand hand) {
 
-        ItemStack itemStack = user.getStackInHand(hand);
+//        ItemStack itemStack = user.getStackInHand(hand);
         user.setCurrentHand(hand);
-        return TypedActionResult.consume(itemStack);
+        return ActionResult.CONSUME;
     }
 
     @Override
@@ -111,20 +114,27 @@ public class SaiItem extends ToolItem {
         return 72000;
     }
 
-    public float getSaiDamage(ToolMaterial toolMaterial) {
-        return switch (toolMaterial) {
-            case WOOD, GOLD -> 2;
-            case DIAMOND -> 3;
-            case NETHERITE -> 3.5F;
-            default -> 2.5F;
-        };
+    public float getSaiDamage(ToolMaterial material) {
+        if (material == ToolMaterial.WOOD || material == ToolMaterial.GOLD) {
+            return 2.0F;
+        } else if (material == ToolMaterial.DIAMOND) {
+            return 3.0F;
+        } else if (material == ToolMaterial.NETHERITE) {
+            return 3.5F;
+        } else {
+            return 2.5F;
+        }
     }
 
     public float getSaiSpeed(ToolMaterial toolMaterial) {
-        return switch (toolMaterial) {
-            case WOOD, GOLD, STONE -> 1.9F;
-            default -> 2.2F;
-        };
+        if (toolMaterial == ToolMaterial.WOOD || toolMaterial == ToolMaterial.GOLD
+                || toolMaterial == ToolMaterial.STONE) {
+            return 1.9F;
+        } else {
+            return 2.2F;
+        }
     }
+
+    public ToolMaterial getMaterial() { return material; }
 
 }

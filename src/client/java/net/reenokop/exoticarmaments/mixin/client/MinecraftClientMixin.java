@@ -12,7 +12,9 @@ import org.jetbrains.annotations.Nullable;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
+import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.Redirect;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import java.util.UUID;
 
@@ -29,6 +31,7 @@ public abstract class MinecraftClientMixin {
 
         if (player != null && player.getMainHandStack().getItem() instanceof SaiItem
                 && player.getOffHandStack().getItem() instanceof SaiItem) {
+
             UUID uuid = player.getUuid();
             boolean leftHandRule = SaiItem.leftHandRule.getOrDefault(uuid, false);
 
@@ -44,6 +47,17 @@ public abstract class MinecraftClientMixin {
         }
 
         return Hand.MAIN_HAND;
+    }
+
+    @Inject(method = "handleInputEvents", at = @At(value = "INVOKE",
+            target = "Lnet/minecraft/client/MinecraftClient;doAttack()Z", shift = At.Shift.BEFORE), cancellable = true)
+    public void doNotSwing(CallbackInfo ci) {
+
+        // Prevent the player from bugging out the hand swap by spamming sais too fast
+        if (player != null && player.getMainHandStack().getItem() instanceof SaiItem && player.getOffHandStack().getItem()
+                instanceof SaiItem && player.getAttackCooldownProgress(0.5F) < 0.65) {
+            ci.cancel();
+        }
     }
 
 }

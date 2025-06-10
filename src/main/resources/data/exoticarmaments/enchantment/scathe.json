@@ -23,7 +23,7 @@
           "base": 0.1,
           "per_level_above_first": 0.1
         },
-        "attribute": "minecraft:player.entity_interaction_range",
+        "attribute": "minecraft:entity_interaction_range",
         "id": "exoticarmaments:enchantment.scathe",
         "operation": "add_value"
       }

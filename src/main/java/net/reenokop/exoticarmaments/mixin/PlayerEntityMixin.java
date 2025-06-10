@@ -54,8 +54,8 @@ public abstract class PlayerEntityMixin extends LivingEntityMixin {
                         target.getBoundingBox().expand(1.4, 0.65, 1.4))) {
 
                     double distanceSqrt = player.squaredDistanceTo(livingEntity3);
-                    float sweepingDamage = (float) (1.0F + player.getAttributeValue(EntityAttributes.PLAYER_SWEEPING_DAMAGE_RATIO)
-                            * (float) player.getAttributeValue(EntityAttributes.GENERIC_ATTACK_DAMAGE)
+                    float sweepingDamage = (float) (1.0F + player.getAttributeValue(EntityAttributes.SWEEPING_DAMAGE_RATIO)
+                            * (float) player.getAttributeValue(EntityAttributes.ATTACK_DAMAGE)
                             + (1.5 - 1.5 * Math.sqrt(distanceSqrt) / 3.6));
 
                     if (crit(target)) {
@@ -70,7 +70,7 @@ public abstract class PlayerEntityMixin extends LivingEntityMixin {
                         float attackDamage = getDamageAgainst(livingEntity3, sweepingDamage, damageSource) * cooldown;
                         livingEntity3.takeKnockback(0.5F, MathHelper.sin(player.getYaw() * (float) (Math.PI / 180.0)),
                                (-MathHelper.cos(player.getYaw() * (float) (Math.PI / 180.0))));
-                        livingEntity3.damage(damageSource, attackDamage);
+                        livingEntity3.serverDamage(damageSource, attackDamage);
                         if (player.getWorld() instanceof ServerWorld serverWorld) {
                             EnchantmentHelper.onTargetDamaged(serverWorld, livingEntity3, damageSource);
                         }
@@ -115,7 +115,7 @@ public abstract class PlayerEntityMixin extends LivingEntityMixin {
         if (dualWield()) {
 
             PlayerEntity player = (PlayerEntity) (Object) this;
-            float attackSpeed = (float) player.getAttributeValue(EntityAttributes.GENERIC_ATTACK_SPEED);
+            float attackSpeed = (float) player.getAttributeValue(EntityAttributes.ATTACK_SPEED);
             SaiItem weapon = (SaiItem) player.getMainHandStack().getItem();
             SaiItem subWeapon = (SaiItem) player.getEquippedStack(EquipmentSlot.OFFHAND).getItem();
             boolean leftHandRule = SaiItem.leftHandRule.getOrDefault(player.getUuid(), false);
@@ -140,7 +140,7 @@ public abstract class PlayerEntityMixin extends LivingEntityMixin {
             SaiItem weapon = (SaiItem) player.getMainHandStack().getItem();
             SaiItem subWeapon = (SaiItem) player.getOffHandStack().getItem();
 
-            return (float)player.getAttributeValue(EntityAttributes.GENERIC_ATTACK_DAMAGE)
+            return (float)player.getAttributeValue(EntityAttributes.ATTACK_DAMAGE)
                     - weapon.getSaiDamage(weapon.getMaterial()) + subWeapon.offHandAttackDamage;
         }
 
@@ -163,7 +163,7 @@ public abstract class PlayerEntityMixin extends LivingEntityMixin {
         Item weapon = player.getMainHandStack().getItem();
         Set<Item> cooldownWeapons = SaiItem.cooldownFromSai.get(player);
 
-        if (player.getItemCooldownManager().isCoolingDown(weapon) && cooldownWeapons != null && cooldownWeapons.contains(weapon)) {
+        if (player.getItemCooldownManager().isCoolingDown(weapon.getDefaultStack()) && cooldownWeapons != null && cooldownWeapons.contains(weapon)) {
             ci.cancel();
 
         } else {
@@ -172,7 +172,7 @@ public abstract class PlayerEntityMixin extends LivingEntityMixin {
     }
 
     @ModifyVariable(method = "applyDamage", at = @At(value = "LOAD", ordinal = 0), ordinal = 0, argsOnly = true)
-    public float saiParry(float amount, DamageSource damageSource) {
+    public float saiParry(float amount, ServerWorld world, DamageSource damageSource) {
 
         PlayerEntity player = (PlayerEntity) (Object) this;
 
@@ -185,12 +185,12 @@ public abstract class PlayerEntityMixin extends LivingEntityMixin {
             // Unwanted animation
             //player.getActiveItem().damage((int) amount / 5 + 1, player, LivingEntity.getSlotForHand(player.getActiveHand()));
 
-            // Occasionally disable sais if the attack is too strong to parry
+            // Occasionally disable sais if the attack is too strong to parry. 25: 0% to 50: 100%
             if (amount >= 25 && 4 * ((amount >= 50 ? 50 : amount) - 25) > Random.create().nextInt(101)) {
                 amount /= 1.2F;
 
                 for (Item sai : sais) {
-                    player.getItemCooldownManager().set(sai, 110);
+                    player.getItemCooldownManager().set(sai.getDefaultStack(), 110);
                     addItemToCooldown(player, sai);
                 }
                 player.clearActiveItem();
@@ -201,13 +201,13 @@ public abstract class PlayerEntityMixin extends LivingEntityMixin {
 
                 // Parry successfully
             } else {
-                amount /= 2;
+                amount /= (float) (1.2 + (2.2 - 1.2) * Math.exp(-0.08 * amount)); // 0: 2.2x, 50: ~1.2x, non linear
 
                 // Occasionally hinder the opponent
                 if (weapon.disarmChance >= Random.create().nextInt(100) + 1) {
 
                     if (attacker instanceof PlayerEntity attackingPlayer && !attackingPlayer.isCreative()) {
-                        attackingPlayer.getItemCooldownManager().set(Items.SHIELD, (int) (weapon.disarmDuration / 1.5));
+                        attackingPlayer.getItemCooldownManager().set(Items.SHIELD.getDefaultStack(), (int) (weapon.disarmDuration / 1.5));
 
                         ItemStack offHandStack = attackingPlayer.getOffHandStack();
 
@@ -230,7 +230,7 @@ public abstract class PlayerEntityMixin extends LivingEntityMixin {
                     float parryDamage = weapon.getSaiDamage(weapon.getMaterial()) / 1.5F;
 
                     if (attacker.getMainHandStack().isEmpty() && attacker.getHealth() > parryDamage) {
-                        attacker.damage(player.getDamageSources().playerAttack(player), parryDamage);
+                        attacker.damage(world, player.getDamageSources().playerAttack(player), parryDamage);
                         attacker.takeKnockback(0.11F, MathHelper.sin(player.getYaw() * (float) (Math.PI / 180.0)),
                             (-MathHelper.cos(player.getYaw() * (float) (Math.PI / 180.0))));
 
@@ -278,8 +278,8 @@ public abstract class PlayerEntityMixin extends LivingEntityMixin {
     @Unique
     public void disableItem(PlayerEntity player, ItemStack stack, Item weapon, int disarmDuration) {
 
-        if (!stack.isEmpty() && !(player.getItemCooldownManager().isCoolingDown(weapon))) {
-            player.getItemCooldownManager().set(weapon, disarmDuration);
+        if (!stack.isEmpty() && !(player.getItemCooldownManager().isCoolingDown(weapon.getDefaultStack()))) {
+            player.getItemCooldownManager().set(weapon.getDefaultStack(), disarmDuration);
             addItemToCooldown(player, weapon);
         }
     }

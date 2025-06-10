@@ -4,6 +4,7 @@ import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.effect.StatusEffects;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.math.random.Random;
 import net.reenokop.exoticarmaments.item.MacheteItem;
 import net.reenokop.exoticarmaments.item.SaiItem;
@@ -44,7 +45,7 @@ public abstract class LivingEntityMixin {
 
 	//Sai
 	@Inject(method = "damage", at = @At(value = "HEAD"))
-	public void saiBypassCooldown(DamageSource damageSource, float amount, CallbackInfoReturnable<Boolean> cir) {
+	public void saiBypassCooldown(ServerWorld world, DamageSource damageSource, float amount, CallbackInfoReturnable<Boolean> cir) {
 
 		LivingEntity livingEntity = (LivingEntity) (Object) this;
 

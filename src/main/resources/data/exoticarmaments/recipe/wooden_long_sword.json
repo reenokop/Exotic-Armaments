@@ -2,12 +2,8 @@
   "type": "minecraft:crafting_shaped",
   "category": "equipment",
   "key": {
-    "I": {
-      "item": "minecraft:stick"
-    },
-    "/": {
-      "tag": "minecraft:planks"
-    }
+    "I": "minecraft:stick",
+    "/": "#minecraft:wooden_tool_materials"
   },
   "pattern": [
     "  /",

@@ -3,8 +3,7 @@ package net.reenokop.exoticarmaments.mixin.client;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.render.entity.model.*;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.client.render.entity.state.BipedEntityRenderState;
 import net.minecraft.util.Hand;
 import net.reenokop.exoticarmaments.item.SaiItem;
 import org.spongepowered.asm.mixin.Mixin;
@@ -14,15 +13,15 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Environment(EnvType.CLIENT)
 @Mixin(BipedEntityModel.class)
-public class BipedEntityModelMixin {
+public class BipedEntityModelMixin<T extends BipedEntityRenderState> {
 
     @Inject(method = "positionRightArm", at = @At("HEAD"), cancellable = true)
-    public void saiParryRightArm(LivingEntity livingEntity, CallbackInfo ci) {
+    public void saiParryRightArm(T state, BipedEntityModel.ArmPose armPose, CallbackInfo ci) {
 
-        if (livingEntity instanceof PlayerEntity player && player.isUsingItem()&& player.getItemUseTimeLeft() > 0
-                && player.getActiveItem().getItem() instanceof SaiItem && player.getActiveHand() == Hand.MAIN_HAND) {
+        BipedEntityModel playerModel = (BipedEntityModel) (Object) this;
 
-            BipedEntityModel playerModel = (BipedEntityModel) (Object) this;
+        if (playerModel instanceof PlayerEntityModel && state.isUsingItem && state.itemUseTime < 72000
+                && state.rightHandStack.getItem() instanceof SaiItem && state.activeHand == Hand.MAIN_HAND) {
             float headYaw = playerModel.head.yaw;
             float headPitch = playerModel.head.pitch;
 
@@ -34,12 +33,13 @@ public class BipedEntityModelMixin {
     }
 
     @Inject(method = "positionLeftArm", at = @At("HEAD"), cancellable = true)
-    public void saiParryLeftArm(LivingEntity livingEntity, CallbackInfo ci) {
+    public void saiParryLeftArm(T state, BipedEntityModel.ArmPose armPose, CallbackInfo ci) {
 
-        if (livingEntity instanceof PlayerEntity player && player.isUsingItem() && player.getItemUseTimeLeft() > 0
-                && player.getActiveItem().getItem() instanceof SaiItem && player.getActiveHand() == Hand.OFF_HAND) {
+        BipedEntityModel playerModel = (BipedEntityModel) (Object) this;
 
-            BipedEntityModel playerModel = (BipedEntityModel) (Object) this;
+        if (playerModel instanceof PlayerEntityModel && state.isUsingItem && state.itemUseTime > 0
+                && state.leftHandStack.getItem() instanceof SaiItem && state.activeHand == Hand.OFF_HAND) {
+
             float headYaw = playerModel.head.yaw;
             float headPitch = playerModel.head.pitch;
 
