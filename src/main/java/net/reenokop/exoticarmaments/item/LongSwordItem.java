@@ -10,7 +10,6 @@ import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.attribute.EntityAttributeModifier;
 import net.minecraft.entity.attribute.EntityAttributes;
-import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ToolMaterial;
@@ -18,9 +17,7 @@ import net.minecraft.registry.Registries;
 import net.minecraft.registry.RegistryEntryLookup;
 import net.minecraft.registry.entry.RegistryEntryList;
 import net.minecraft.registry.tag.BlockTags;
-import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
-import net.minecraft.world.World;
 import net.reenokop.exoticarmaments.attribute.ModAttributes;
 
 import java.util.List;
