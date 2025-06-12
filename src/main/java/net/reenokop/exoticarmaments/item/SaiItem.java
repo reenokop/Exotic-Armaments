@@ -42,7 +42,7 @@ public class SaiItem extends Item {
     public int disarmChance;
     public int disarmDuration;
     public static List<Item> sais = new ArrayList<>();
-    public static Map<PlayerEntity, Set<Item>> cooldownFromSai = new HashMap<>();
+    public static Map<UUID, Set<Item>> cooldownFromSai = new HashMap<>();
     private final ToolMaterial material;
 
     public static AttributeModifiersComponent createAttributeModifiers(ToolMaterial material, float attackDamage, float attackSpeed,

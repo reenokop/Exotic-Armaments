@@ -2,14 +2,17 @@ package net.reenokop.exoticarmaments;
 
 import net.fabricmc.api.ModInitializer;
 
+import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
 import net.fabricmc.fabric.api.itemgroup.v1.ItemGroupEvents;
 import net.fabricmc.fabric.api.networking.v1.PayloadTypeRegistry;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.minecraft.item.ItemGroups;
 import net.minecraft.item.Items;
 import net.reenokop.exoticarmaments.event.ModLootTables;
+import net.reenokop.exoticarmaments.event.SaiCooldownScheduler;
 import net.reenokop.exoticarmaments.item.ModItems;
 import net.reenokop.exoticarmaments.item.SaiItem;
+import net.reenokop.exoticarmaments.network.CooldownPacket;
 import net.reenokop.exoticarmaments.network.DualWieldPacket;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -45,6 +48,11 @@ public class ExoticArmaments implements ModInitializer {
 
 		PayloadTypeRegistry.playC2S().register(DualWieldPacket.DUAL_WIELD_ID, DualWieldPacket.DUAL_WIELD_CODEC);
 		ServerPlayNetworking.registerGlobalReceiver(DualWieldPacket.DUAL_WIELD_ID, DualWieldPacket::apply);
+
+		PayloadTypeRegistry.playS2C().register(CooldownPacket.COOLDOWN_ID, CooldownPacket.COOLDOWN_CODEC);
+
+
+		ServerTickEvents.END_SERVER_TICK.register(server -> SaiCooldownScheduler.tick());
 
 		ModLootTables.modifyLootTables();
 

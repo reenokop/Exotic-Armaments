@@ -35,13 +35,12 @@
   "tag.item.exoticarmaments.enchantable.long_sword": "Long Swords",
   "tag.item.exoticarmaments.enchantable.sai": "Sais",
 
-  "tag.exoticarmaments.enchantable.blade": "Exotic Armaments Weapons",
-  "tag.exoticarmaments.enchantable.combat_weapon": "Exotic Armaments Combat Weapons",
-  "tag.exoticarmaments.enchantable.large_weapon": "Exotic Armaments Large Weapons",
-  "tag.exoticarmaments.enchantable.slashing_weapon": "Exotic Armaments Slashing Weapons",
-  "tag.exoticarmaments.enchantable.slicing_weapon": "Exotic Armaments Slicing Weapons",
-  "tag.exoticarmaments.enchantable.sweeping_weapon": "Exotic Armaments Sweeping Weapons",
-
+  "tag.item.exoticarmaments.enchantable.blade": "Exotic Armaments Weapons",
+  "tag.item.exoticarmaments.enchantable.combat_weapon": "Exotic Armaments Combat Weapons",
+  "tag.item.exoticarmaments.enchantable.large_weapon": "Exotic Armaments Large Weapons",
+  "tag.item.exoticarmaments.enchantable.slashing_weapon": "Exotic Armaments Slashing Weapons",
+  "tag.item.exoticarmaments.enchantable.slicing_weapon": "Exotic Armaments Slicing Weapons",
+  "tag.item.exoticarmaments.enchantable.sweeping_weapon": "Exotic Armaments Sweeping Weapons",
 
   "attribute.exoticarmaments.generic.shield_disable_chance": "Shield Disable Chance",
   "attribute.exoticarmaments.generic.sweeping_edge_radius": "Sweeping Edge Radius",

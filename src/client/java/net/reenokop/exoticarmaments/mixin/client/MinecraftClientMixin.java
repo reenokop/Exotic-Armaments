@@ -5,10 +5,11 @@ import net.fabricmc.api.Environment;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.network.ClientPlayerEntity;
+import net.minecraft.item.Item;
 import net.minecraft.util.Hand;
+import net.reenokop.exoticarmaments.ExoticArmamentsClient;
 import net.reenokop.exoticarmaments.item.SaiItem;
 import net.reenokop.exoticarmaments.network.DualWieldPacket;
-import org.jetbrains.annotations.Nullable;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
@@ -22,7 +23,7 @@ import java.util.UUID;
 @Mixin(MinecraftClient.class)
 public abstract class MinecraftClientMixin {
 
-    @Shadow @Nullable public ClientPlayerEntity player;
+    @Shadow public ClientPlayerEntity player;
     @Shadow public abstract boolean isInSingleplayer();
 
     @Redirect(method = "doAttack", at = @At(value = "INVOKE", target =
@@ -53,10 +54,16 @@ public abstract class MinecraftClientMixin {
             target = "Lnet/minecraft/client/MinecraftClient;doAttack()Z", shift = At.Shift.BEFORE), cancellable = true)
     public void doNotSwing(CallbackInfo ci) {
 
-        // Prevent the player from bugging out the hand swap by spamming sais too fast
-        if (player != null && player.getMainHandStack().getItem() instanceof SaiItem && player.getOffHandStack().getItem()
-                instanceof SaiItem && player.getAttackCooldownProgress(0.5F) < 0.65) {
-            ci.cancel();
+        if (player != null) {
+            Item weapon = player.getMainHandStack().getItem();
+
+            // Prevent the player from bugging out the hand swap by spamming sais too fast or attacking on cooldown
+            if (weapon instanceof SaiItem && player.getOffHandStack().getItem() instanceof SaiItem
+                    && player.getAttackCooldownProgress(0.5F) < 0.65
+                    || player.getItemCooldownManager().isCoolingDown(weapon.getDefaultStack())
+                    && ExoticArmamentsClient.cooldownFromSai.get(player.getUuid()).contains(weapon)) {
+                ci.cancel();
+            }
         }
     }
 
